@@ -1,0 +1,73 @@
+libraries
+
+http://blog.benoitvallon.com/data-structures-in-javascript/the-graph-data-structure/
+
+https://www.npmjs.com/package/graph-data-structure
+
+https://hackernoon.com/the-javascript-developers-guide-to-graphs-and-detecting-cycles-in-them-96f4f619d563
+
+http://www.scriptonitejs.com/javascript-graphs/
+
+https://www.khanacademy.org/computing/computer-science/algorithms/graph-representation/a/representing-graphs
+
+http://js.cytoscape.org/
+
+https://github.com/vasturiano/3d-force-graph
+
+https://www.npmjs.com/package/graph-data-structure
+
+https://github.com/joshblack/graph
+
+https://github.com/joshblack/graph
+
+https://adrianmejia.com/blog/2018/05/14/data-structures-for-beginners-graphs-time-complexity-tutorial/
+
+weighted- each edge contains the sentence where the link was made
+
+directed or undirected- word in the sentence that was used first is the source for the link and the target is the second term
+
+obviously going to be cyclic
+
+run calculations on the cycles?  the number of cycles involving specific nodes or clusters of nodes 
+
+https://hackernoon.com/the-javascript-developers-guide-to-graphs-and-detecting-cycles-in-them-96f4f619d563
+
+The most basic thing to know about graphs is that they’re composed of vertices and edges. Vertices are the things of the graph: an integer, an object, a website, etc. Edges connect a pair of vertices.
+
+Graphs can be:
+
+	Weighted or unweighted — this refers to whether or not the edges of a graph are labeled with values. If they are, it’s weighted.
+
+	Directed or undirected — this refers to whether the edge behaves like a bridge (undirected) or a bowling lane (directed).
+
+	Cyclic or Acyclic — this refers to whether or not a cycle exists in a graph.
+
+
+Adjacency List, 
+
+{
+a: [b,c,d],
+b: [c,f],
+d: [e],
+e: [a,f],
+f: [a, c, d, e]
+}
+
+or with an Adjacency Matrix, which is a two-dimensional array where edges between vertices are represented with a 1:
+
+[ [0, 1, 0, 0, 0, 0, 1, 0, 1, 0],
+  [1, 0, 0, 0, 1, 0, 1, 0, 0, 1],
+  [0, 0, 0, 0, 1, 0, 1, 0, 0, 0],
+  [0, 0, 0, 0, 1, 1, 0, 0, 1, 0],
+  [0, 1, 1, 1, 0, 1, 0, 0, 0, 1],
+  [0, 0, 0, 1, 1, 0, 0, 0, 0, 0],
+  [1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+  [1, 0, 0, 1, 0, 0, 0, 1, 0, 0],
+  [0, 1, 0, 0, 1, 0, 0, 1, 0, 0] ]
+
+  https://cs.stackexchange.com/questions/79322/when-are-adjacency-lists-or-matrices-the-better-choice
+
+http://www.scriptonitejs.com/javascript-graphs/
+
+
