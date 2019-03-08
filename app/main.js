@@ -33,8 +33,6 @@ const myData = {
     ]
 }
 
-
-
 render(
   <AllCampus />, 
   document.getElementById('main')

@@ -19,18 +19,37 @@ export default class AllCampus extends React.Component {
 
     const theseNodes = await axios.get('/api/hegel')
 
-    console.log(theseNodes)
+    // console.log(theseNodes)
 
     this.setState({
         nodes : JSON.parse(theseNodes.data)
     })
   }
 
+
+  _handleClick = node => {
+          // Aim at node from outside it
+          const distance = 40;
+          const distRatio = 1 + distance/Math.hypot(node.x, node.y, node.z);
+          this.fg.cameraPosition(
+            { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }, // new position
+            node, // lookAt ({ x, y, z })
+            1000  // ms transition duration
+          );
+        };
+//  
   render () {
 
     return (
-          this.state.nodes ? <ForceGraph3D graphData={this.state.nodes} /> : '' 
+          this.state.nodes ? <ForceGraph3D 
+                                ref={el => { this.fg = el; }}
+                                graphData={this.state.nodes} 
+                                onNodeClick={this._handleClick}
+                                linkWidth={0}
+                                linkDirectionalArrowRelPos={1}
+                              /> : '' 
           
     )
   }
 }
+                                // linkCurvature={0.25}
