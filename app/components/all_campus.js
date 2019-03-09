@@ -1,6 +1,7 @@
 import React from 'react'
 import { ForceGraph3D } from 'react-force-graph';
 import axios from 'axios'
+import SpriteText from 'three-spritetext';
 
 // import { connect } from 'react-redux'
 // import { axnTHUNK_GET_ALL_CAMPUS, axnTHUNK_DELETE_CAMPUS } from './../reducers/thunx'
@@ -18,8 +19,6 @@ export default class AllCampus extends React.Component {
   async componentDidMount(){
 
     const theseNodes = await axios.get('/api/hegel')
-
-    // console.log(theseNodes)
 
     this.setState({
         nodes : JSON.parse(theseNodes.data)
@@ -40,16 +39,36 @@ export default class AllCampus extends React.Component {
 //  
   render () {
 
+    console.dir(ForceGraph3D)
+
     return (
-          this.state.nodes ? <ForceGraph3D 
+          this.state.nodes ? <ForceGraph3D
                                 ref={el => { this.fg = el; }}
-                                graphData={this.state.nodes} 
+                                graphData={this.state.nodes}
                                 onNodeClick={this._handleClick}
-                                linkWidth={0}
-                                linkDirectionalArrowRelPos={1}
-                              /> : '' 
+                                nodeAutoColorBy="group"
+                                nodeThreeObject={node => {
+                                  const sprite = new SpriteText(node.id);
+                                  sprite.color = node.color;
+                                  sprite.textHeight = 2;
+                                  return sprite;
+                                }}
+                                linkWidth={.01}
+                              /> : ''
           
     )
   }
 }
                                 // linkCurvature={0.25}
+
+/*
+
+<ForceGraph3D 
+                                
+                                graphData={this.state.nodes} 
+                                
+                                linkWidth={0}
+                                linkDirectionalArrowRelPos={1}
+                              /> : '' 
+
+*/

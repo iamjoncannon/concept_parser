@@ -12,27 +12,6 @@ import AllCampus from './components/all_campus'
 //   document.getElementById('main')
 // )
 
-const myData = {
-    "nodes": [ 
-        { 
-          "id": "id1",
-          "name": "NODE NUMERO UNO",
-          "val": 1 
-        },
-        { 
-          "id": "id2",
-          "name": "NODE NUMERO DOSE",
-          "val": 10
-        }
-    ],
-    "links": [
-        {
-            "source": "id1",
-            "target": "id2"
-        }
-    ]
-}
-
 render(
   <AllCampus />, 
   document.getElementById('main')
