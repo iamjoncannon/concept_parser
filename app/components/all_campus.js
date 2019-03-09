@@ -2,6 +2,8 @@ import React from 'react'
 import { ForceGraph3D } from 'react-force-graph';
 import axios from 'axios'
 import SpriteText from 'three-spritetext';
+import 'react-dat-gui/build/react-dat-gui.css';
+import DatGui, { DatFolder, DatSelect, DatBoolean, DatColor, DatNumber, DatString, DatButton } from 'react-dat-gui';
 
 // import { connect } from 'react-redux'
 // import { axnTHUNK_GET_ALL_CAMPUS, axnTHUNK_DELETE_CAMPUS } from './../reducers/thunx'
@@ -13,21 +15,35 @@ export default class AllCampus extends React.Component {
   constructor(){
     super()
 
-    this.state = {}
+    this.state = {
+      data: {
+        package: 'react-dat-gui',
+        Sections: 'Science of Logic',
+        NodeDensity: 9000,
+        EdgeDensity: 9000,
+        isAwesome: true,
+        feelsLike: '#2FA1D6',
+      }
+    }
+
   }
 
   async componentDidMount(){
 
-    const theseNodes = await axios.get('/api/hegel')
+    const theseNodes = await axios.get('/api/hegel/')
+
+    console.log(theseNodes.data)
 
     this.setState({
         nodes : JSON.parse(theseNodes.data)
     })
   }
 
+  handleUpdate = data => this.setState({ data })
 
   _handleClick = node => {
           // Aim at node from outside it
+          console.log(node)
           const distance = 40;
           const distRatio = 1 + distance/Math.hypot(node.x, node.y, node.z);
           this.fg.cameraPosition(
@@ -35,31 +51,52 @@ export default class AllCampus extends React.Component {
             node, // lookAt ({ x, y, z })
             1000  // ms transition duration
           );
-        };
-//  
+  };
+  
+  updateGraph = async (data) => {
+
+    let combinedQuery = `?NodeDensity=${this.state.data.NodeDensity}&EdgeDensity=${this.state.data.EdgeDensity}`
+
+    const theseNodes = await axios.get(`/api/hegel/data/${combinedQuery}`)
+
+    console.log(theseNodes.data)
+
+    this.setState({
+      nodes : JSON.parse(theseNodes.data)
+    })
+
+  }
+
   render () {
 
-    console.dir(ForceGraph3D)
-
     return (
-          this.state.nodes ? <ForceGraph3D
+        <div>
+          { this.state.nodes ? <ForceGraph3D
                                 ref={el => { this.fg = el; }}
                                 graphData={this.state.nodes}
                                 onNodeClick={this._handleClick}
-                                nodeAutoColorBy="group"
                                 nodeThreeObject={node => {
-                                  const sprite = new SpriteText(node.id);
-                                  sprite.color = node.color;
+                                  const sprite = new SpriteText(node.name);
                                   sprite.textHeight = 2;
                                   return sprite;
                                 }}
                                 linkWidth={.01}
-                              /> : ''
+                              /> : 'LOADING' }
+          <DatGui data={this.state.data} onUpdate={this.handleUpdate}>
+            <DatNumber path='NodeDensity' label='Node Density' min={1} max={10000} step={1} />
+            <DatNumber path='EdgeDensity' label='Edge Density' min={1} max={10000} step={1} />
+            <DatButton label='APPLY' onClick={()=> this.updateGraph(this.state.data.NodeDensity)} />
+          </DatGui>
+        </div>
           
     )
   }
 }
+                                  // sprite.color = node.color;
+            // <DatString path='package' label='Package' />
                                 // linkCurvature={0.25}
+            // <DatBoolean path='isAwesome' label='Awesome?' />
+            // <DatColor path='feelsLike' label='Feels Like' />
 
 /*
 

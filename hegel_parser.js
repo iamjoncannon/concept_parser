@@ -39,13 +39,7 @@
 // 	return tagged
 // }
 
-// let graphNodes = {
 
-// 	nodes: [],
-// 	links: []
-// }
-
-// let concepts = {}
 
 // function pageParser(theText){
 
@@ -93,6 +87,14 @@
 // }
 
 // pageParser(text)
+
+let graphNodes = {
+
+	nodes: [],
+	links: []
+}
+
+let concepts = {}
 
 function convertToGraph(){
 

@@ -8,11 +8,13 @@ async function concept_relative_weight(concepts){
 
 	// console.log(concepts)
 
-	// the weight of the node is determined by 
-	// its number edges
+	// the relativeweight of the node is determined by 
+	// the weight of the nodes to which it is connected
 
-	for (let index of concepts){
-		// console.log('this is the index: ', index)
+	for (let concept of concepts){
+
+		// console.log('this is the concept: ', concept)
+		
 		try{
 
 			let edges =	await Edge.findAll({
@@ -20,21 +22,35 @@ async function concept_relative_weight(concepts){
 								
 								  [Op.or]: [
 								    {
-								      sourceId: index.id
+								      sourceId: concept.id
 								    },
 								    {
-								      targetId: index.id
+								      targetId: concept.id
 								    }
 								  ]
 							}
 						})
 
-		
-			index = await index.update({
-				weight : edges.length
+			let relativeWeight = 0
+
+			for(let edge of edges){
+
+			// 	// the other node whose weight needs to be queried
+
+				let otherNodeId
+
+				edge.sourceId === concept.id ? otherNodeId = edge.targetId : otherNodeId = edge.sourceId ;
+
+				let otherNode = await Concept.findById(otherNodeId)
+
+				relativeWeight += otherNode.weight
+			}
+
+			updatedConcept = await concept.update({
+				relativeweight : relativeWeight
 			})
 
-			console.log(index.weight)
+
 
 		}
 		catch(err){
