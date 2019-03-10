@@ -30,9 +30,11 @@ export default class AllCampus extends React.Component {
 
   async componentDidMount(){
 
-    const theseNodes = await axios.get('/api/hegel/')
+    let combinedQuery = `?NodeDensity=${this.state.data.NodeDensity}&EdgeDensity=${this.state.data.EdgeDensity}`
+    
+    const theseNodes = await axios.get(`/api/hegel/data/${combinedQuery}`)
 
-    console.log(theseNodes.data)
+    // console.log(theseNodes.data)
 
     this.setState({
         nodes : JSON.parse(theseNodes.data)
@@ -43,7 +45,7 @@ export default class AllCampus extends React.Component {
 
   _handleClick = node => {
           // Aim at node from outside it
-          console.log(node)
+          // console.log(node)
           const distance = 40;
           const distRatio = 1 + distance/Math.hypot(node.x, node.y, node.z);
           this.fg.cameraPosition(
@@ -59,7 +61,7 @@ export default class AllCampus extends React.Component {
 
     const theseNodes = await axios.get(`/api/hegel/data/${combinedQuery}`)
 
-    console.log(theseNodes.data)
+    // console.log(theseNodes.data)
 
     this.setState({
       nodes : JSON.parse(theseNodes.data)
@@ -67,20 +69,29 @@ export default class AllCampus extends React.Component {
 
   }
 
+  linkColor = (weight) => {
+
+  }
+
   render () {
+
+    console.log(this.state.nodes)
 
     return (
         <div>
           { this.state.nodes ? <ForceGraph3D
                                 ref={el => { this.fg = el; }}
                                 graphData={this.state.nodes}
+                                linkWidth={0}
+                                linkAutoColorBy={d => console.log(d)}
+                                onLinkClick={(link)=>console.log(link)}
                                 onNodeClick={this._handleClick}
                                 nodeThreeObject={node => {
                                   const sprite = new SpriteText(node.name);
                                   sprite.textHeight = 2;
                                   return sprite;
                                 }}
-                                linkWidth={.01}
+                                
                               /> : 'LOADING' }
           <DatGui data={this.state.data} onUpdate={this.handleUpdate}>
             <DatNumber path='NodeDensity' label='Node Density' min={1} max={10000} step={1} />

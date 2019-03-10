@@ -1,4 +1,4 @@
-const { Sentence, Concept, Edge, Weight } = require('./../../server/db/index')
+const { Sentence, Concept, Edge, EdgeWeight } = require('./../../server/db/index')
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const edgeClip = require('./../../parser/edge_clip')
@@ -26,28 +26,40 @@ async function getGraphData(query){
 
 		try {
 
-			theseEdges = await Edge.findAll({
+			// theseEdges = await EdgeWeight.findAll({
+			// 				where : {
+								
+			// 					  [Op.or]: [
+			// 					    {
+			// 					      sourceid: concept.id
+			// 					    },
+			// 					    {
+			// 					      targetid: concept.id
+			// 					    }
+			// 					  ]
+			// 				},
+			// 				// attributes: ['sourceId', 'targetId']
+			// 			})
+
+				theseEdges = await EdgeWeight.findAll({
 							where : {
 								
-								  [Op.or]: [
-								    {
-								      sourceId: concept.id
-								    },
-								    {
-								      targetId: concept.id
-								    }
-								  ]
-							},
-							attributes: ['sourceId', 'targetId']
+								      sourceid: concept.id
+								   
+									},
+							// attributes: ['sourceId', 'targetId']
 						})
+			
 			theseEdges = theseEdges
 							.map(data => data = data.dataValues)
 								.map(function(data){
 
 									let newObject = {
 														
-										source: data.sourceId,
-										target: data.targetId
+										source: data.sourceid,
+										target: data.targetid,
+										weight: data.weight,
+										color: "#FF0000"
 									}
 									
 									return newObject

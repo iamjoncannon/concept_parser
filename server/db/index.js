@@ -49,10 +49,10 @@ const Sentence = db.define('sentence', {
 
 const EdgeWeight = db.define('edgeweight', {
 
-  sourceId: {
+  sourceid: {
     type: Sequelize.INTEGER
   },
-  targetId: {
+  targetid: {
     type: Sequelize.INTEGER
   },
   weight: {
@@ -60,9 +60,16 @@ const EdgeWeight = db.define('edgeweight', {
   }
 })
 
+EdgeWeight.prototype.increaseWeight = function(){
+    
+  return this.weight++
+}
+
 // alter table concepts add relativeweight integer;
 
 // create table <table name> {column names and types}
+
+// createdAt updatedAt
 
 module.exports = {
   // Include your models in this exports object as well!

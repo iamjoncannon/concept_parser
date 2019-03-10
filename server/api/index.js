@@ -6,29 +6,6 @@ let fs = require('fs')
 
 let getGraphData = require('./getGraphData')
 
-let blank = {
-    nodes: [
-        {
-          id: "id1",
-          name: "name1",
-          val: 1
-        },
-        {
-          id: "id2",
-          name: "name2",
-          val: 200
-        },
-
-    ],
-    links: [
-        {
-            source: "id1",
-            target: "id2"
-        },
- 
-    ]
-}
-
 router.get('/hegel', async (req, res, next)=>{
 	
 	res.json(JSON.stringify(blank))
@@ -37,11 +14,7 @@ router.get('/hegel', async (req, res, next)=>{
 
 router.get('/hegel/data', async (req, res, next)=>{
   
-  // text = fs.readFileSync('./fulltext.json', 'utf8');
-
   let graphData = await getGraphData(req.query)
-
-  // console.log(graphData)
 
   res.json(JSON.stringify(graphData))
 

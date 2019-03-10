@@ -8,7 +8,9 @@ const Op = Sequelize.Op;
 
 // const pageParser = require('./parser/sentence_node')
 const { Sentence, Concept, Edge } = require('./server/db/index')
-let getGraphData = './server/api/getGraphData'
+// let getGraphData = './server/api/getGraphData'
+
+let calculateEdgeWeight = require('./parser/calculate_edgeweight')
 
 // const sentenceParser = require('./parser/sentence_parser')
 
@@ -20,6 +22,12 @@ let getGraphData = './server/api/getGraphData'
 async function startServer(){
 
 	await db.sync()
+
+	// let allEdges = await Edge.findAll()
+
+	
+	// calculateEdgeWeight(allEdges)
+
 
     console.log('db synced')
     
