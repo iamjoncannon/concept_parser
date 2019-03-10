@@ -17,8 +17,11 @@ export default class AllCampus extends React.Component {
     super()
 
     this.state = {
+      maxNodeWeight : 22078,
+      loading: 'RENDER',
       openSide : true,
       data: {
+        filterType: '',
         package: 'react-dat-gui',
         Sections: 'Science of Logic',
         NodeDensity: 9000,
@@ -58,18 +61,25 @@ export default class AllCampus extends React.Component {
           );
   };
   
-  updateGraph = async (data) => {
+  updateGraph = (data) => {
 
     let combinedQuery = `?NodeDensity=${this.state.data.NodeDensity}&EdgeDensity=${this.state.data.EdgeDensity}`
 
-    const theseNodes = await axios.get(`/api/hegel/data/${combinedQuery}`)
+    axios.get(`/api/hegel/data/${combinedQuery}`).then(theseNodes => 
 
-    // console.log(theseNodes.data)
+      this.setState({
+        nodes : JSON.parse(theseNodes.data),
+        openSide: false,
+        loading: 'RENDER'
+      })
+
+      )
 
     this.setState({
-      nodes : JSON.parse(theseNodes.data),
-      openSide: false
-    })
+        loading: '...loading'
+      })
+    // console.log(theseNodes.data)
+
 
   }
 
@@ -93,8 +103,6 @@ export default class AllCampus extends React.Component {
   };
 
   render () {
-
-    let maxNodeWeight = 22078
 
     return (
       <div id="App">
@@ -123,15 +131,16 @@ export default class AllCampus extends React.Component {
                                 nodeThreeObject={node => {
                                  
                                   const sprite = new SpriteText(node.name);
-                                  sprite.textHeight = 15 * (node.weight / maxNodeWeight);
+                                  sprite.textHeight = 15 * (node.weight / this.state.maxNodeWeight);
                                   return sprite;
                                 }}
                                 
                               /> : 'LOADING' }
           <DatGui data={this.state.data} onUpdate={this.handleUpdate}>
+            <DatSelect path='FilterType' label="Node Filter" options={['Absolute density', 'Relative density']} /> 
             <DatNumber path='NodeDensity' label='Node Density' min={300} max={10000} step={1} />
             <DatNumber path='EdgeDensity' label='Edge Density' min={1} max={150} step={1} />
-            <DatButton label='RENDER' onClick={()=> this.updateGraph(this.state.data.NodeDensity)} />
+            <DatButton label={this.state.loading} onClick={()=> this.state.loading === 'RENDER' ? this.updateGraph(this.state.data.NodeDensity) : ''  } />
           </DatGui> 
         </div>
       </div>

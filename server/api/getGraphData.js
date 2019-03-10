@@ -5,6 +5,8 @@ const edgeClip = require('./../../parser/edge_clip')
 
 async function getGraphData(query){
 
+	let filterType 
+
 	let concepts = await Concept.findAll({
 		where: {
 			weight : {
