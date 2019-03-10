@@ -9,14 +9,23 @@ i click on the root URL and the graph pops up (with a specified output that look
 
 i want to choose between the whole book and one section in the book
 
-i want to pick the node weight (weight of the nodes) and edge density (relative weight
-of each edge by those nodes) to render
+	- would have to create separate edge weight tables for each section and then query those
 
-i want to click on a node an see the strongest edges that the node connects to
+i want to pick the node weight (weight of the nodes) and edge density (relative weight of each edge by those nodes) to render
+
+	- filter and color code edges by density 
 
 i want to click on a node and see the densest sentences it appears in
 
+	- click on node and sidebar pops up to the left with all the sentences it appears in, sorted by
+
 i want to query for the densest sentences
+
+	- separate DAT gui folder with sentence queries, appears in side bar
+
+i want to see a loading message bewteen calling the api and the
+data being loaded 
+
 
 
 

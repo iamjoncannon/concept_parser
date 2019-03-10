@@ -11,14 +11,15 @@ async function getGraphData(query){
 				[Op.gt]: query.NodeDensity
 			},
 		},
-		attributes: ['id', 'name']
+		attributes: ['id', 'name', 'weight']
 	})
 
 	let edges = []
 
 	concepts = concepts.map(data => data = data.dataValues)
 
-	conceptCache = { }
+	let conceptCache = { }
+
 
 	for(let concept of concepts){
 
@@ -51,6 +52,7 @@ async function getGraphData(query){
 						})
 			
 			theseEdges = theseEdges
+							.filter(edge => edge.dataValues.weight > query.EdgeDensity)
 							.map(data => data = data.dataValues)
 								.map(function(data){
 
@@ -75,10 +77,19 @@ async function getGraphData(query){
 
 	}
 
+	let edgeCache = { }
+	
 	let data = {
-		nodes: concepts,
 		links: edges
 				.filter( edge => conceptCache[edge.target] && conceptCache[edge.source])
+				.map( function(edge){ 
+									edgeCache[edge.target] = true 
+									edgeCache[edge.source] = true
+									return edge
+								} ) ,
+		nodes: concepts
+				.filter(node => edgeCache[node.id])
+				// .forEach(node => console.log(node.id, edgeCache[node.id]))
 	}
 
 	return data

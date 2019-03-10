@@ -4,6 +4,7 @@ import axios from 'axios'
 import SpriteText from 'three-spritetext';
 import 'react-dat-gui/build/react-dat-gui.css';
 import DatGui, { DatFolder, DatSelect, DatBoolean, DatColor, DatNumber, DatString, DatButton } from 'react-dat-gui';
+import { slide as Menu } from 'react-burger-menu'
 
 // import { connect } from 'react-redux'
 // import { axnTHUNK_GET_ALL_CAMPUS, axnTHUNK_DELETE_CAMPUS } from './../reducers/thunx'
@@ -16,11 +17,12 @@ export default class AllCampus extends React.Component {
     super()
 
     this.state = {
+      openSide : true,
       data: {
         package: 'react-dat-gui',
         Sections: 'Science of Logic',
         NodeDensity: 9000,
-        EdgeDensity: 9000,
+        EdgeDensity: 100,
         isAwesome: true,
         feelsLike: '#2FA1D6',
       }
@@ -37,7 +39,8 @@ export default class AllCampus extends React.Component {
     // console.log(theseNodes.data)
 
     this.setState({
-        nodes : JSON.parse(theseNodes.data)
+        nodes : JSON.parse(theseNodes.data),
+        openSide: true
     })
   }
 
@@ -64,7 +67,8 @@ export default class AllCampus extends React.Component {
     // console.log(theseNodes.data)
 
     this.setState({
-      nodes : JSON.parse(theseNodes.data)
+      nodes : JSON.parse(theseNodes.data),
+      openSide: false
     })
 
   }
@@ -73,12 +77,42 @@ export default class AllCampus extends React.Component {
 
   }
 
+  showSettings (event) {
+    event.preventDefault();
+    
+    
+    
+  }
+
+  isMenuOpen = (state) => {
+
+    this.setState({
+      openSide : state.isOpen
+    })
+
+  };
+
   render () {
 
-    console.log(this.state.nodes)
+    let maxNodeWeight = 22078
 
     return (
-        <div>
+      <div id="App">
+          <Menu pageWrapId={"page-wrap"} 
+                outerContainerId={"App"}
+                width={ '30%' }
+                isOpen={ this.state.openSide }
+                onStateChange={ this.isMenuOpen }
+          >
+            {/*
+            <a id="home" className="menu-item" href="/">Home</a>
+            <a id="about" className="menu-item" href="/about">About</a>
+            <a id="contact" className="menu-item" href="/contact">Contact</a>
+            */}
+           {/*} <a onClick={ this.showSettings } className="menu-item--small" href="/">Settings</a> */}
+         </Menu>
+        
+        <div id="page-wrap">
           { this.state.nodes ? <ForceGraph3D
                                 ref={el => { this.fg = el; }}
                                 graphData={this.state.nodes}
@@ -87,19 +121,20 @@ export default class AllCampus extends React.Component {
                                 onLinkClick={(link)=>console.log(link)}
                                 onNodeClick={this._handleClick}
                                 nodeThreeObject={node => {
+                                 
                                   const sprite = new SpriteText(node.name);
-                                  sprite.textHeight = 2;
+                                  sprite.textHeight = 15 * (node.weight / maxNodeWeight);
                                   return sprite;
                                 }}
                                 
                               /> : 'LOADING' }
           <DatGui data={this.state.data} onUpdate={this.handleUpdate}>
-            <DatNumber path='NodeDensity' label='Node Density' min={1} max={10000} step={1} />
-            <DatNumber path='EdgeDensity' label='Edge Density' min={1} max={10000} step={1} />
-            <DatButton label='APPLY' onClick={()=> this.updateGraph(this.state.data.NodeDensity)} />
-          </DatGui>
+            <DatNumber path='NodeDensity' label='Node Density' min={300} max={10000} step={1} />
+            <DatNumber path='EdgeDensity' label='Edge Density' min={1} max={150} step={1} />
+            <DatButton label='RENDER' onClick={()=> this.updateGraph(this.state.data.NodeDensity)} />
+          </DatGui> 
         </div>
-          
+      </div>
     )
   }
 }

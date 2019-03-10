@@ -60,11 +60,6 @@ const EdgeWeight = db.define('edgeweight', {
   }
 })
 
-EdgeWeight.prototype.increaseWeight = function(){
-    
-  return this.weight++
-}
-
 // alter table concepts add relativeweight integer;
 
 // create table <table name> {column names and types}
