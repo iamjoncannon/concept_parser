@@ -21,13 +21,13 @@ export default class AllCampus extends React.Component {
       loading: 'RENDER',
       openSide : true,
       data: {
-        filterType: '',
+        filterType: 'Absolute density',
         package: 'react-dat-gui',
         Sections: 'Science of Logic',
         NodeDensity: 9000,
         EdgeDensity: 100,
-        isAwesome: true,
-        feelsLike: '#2FA1D6',
+        edgeDensityDegrees : 1,
+        degreeRange: 30
       }
     }
 
@@ -35,16 +35,7 @@ export default class AllCampus extends React.Component {
 
   async componentDidMount(){
 
-    let combinedQuery = `?NodeDensity=${this.state.data.NodeDensity}&EdgeDensity=${this.state.data.EdgeDensity}`
-    
-    const theseNodes = await axios.get(`/api/hegel/data/${combinedQuery}`)
-
-    // console.log(theseNodes.data)
-
-    this.setState({
-        nodes : JSON.parse(theseNodes.data),
-        openSide: true
-    })
+    this.updateGraph(true)
   }
 
   handleUpdate = data => this.setState({ data })
@@ -57,19 +48,21 @@ export default class AllCampus extends React.Component {
           this.fg.cameraPosition(
             { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }, // new position
             node, // lookAt ({ x, y, z })
-            1000  // ms transition duration
+            500  // ms transition duration
           );
   };
   
-  updateGraph = (data) => {
+  updateGraph = (scene) => {
 
-    let combinedQuery = `?NodeDensity=${this.state.data.NodeDensity}&EdgeDensity=${this.state.data.EdgeDensity}`
+    let { NodeDensity, EdgeDensity, filterType, degreeRange, edgeDensityDegrees } = this.state.data
+
+    let combinedQuery = `?NodeDensity=${NodeDensity}&EdgeDensity=${EdgeDensity}&filterType=${filterType}&degreeRange=${degreeRange}&edgeDensityDegrees=${edgeDensityDegrees}`
 
     axios.get(`/api/hegel/data/${combinedQuery}`).then(theseNodes => 
 
       this.setState({
         nodes : JSON.parse(theseNodes.data),
-        openSide: false,
+        openSide: scene,
         loading: 'RENDER'
       })
 
@@ -78,9 +71,6 @@ export default class AllCampus extends React.Component {
     this.setState({
         loading: '...loading'
       })
-    // console.log(theseNodes.data)
-
-
   }
 
   linkColor = (weight) => {
@@ -89,9 +79,6 @@ export default class AllCampus extends React.Component {
 
   showSettings (event) {
     event.preventDefault();
-    
-    
-    
   }
 
   isMenuOpen = (state) => {
@@ -101,6 +88,17 @@ export default class AllCampus extends React.Component {
     })
 
   };
+
+  _handleLinkHover = (link, prevLink) => {
+
+    if(link === null){
+      prevLink.name = ''
+    }
+    else{
+      link.name = link.source.name + " => " + link.target.name
+    }
+
+  }
 
   render () {
 
@@ -112,21 +110,31 @@ export default class AllCampus extends React.Component {
                 isOpen={ this.state.openSide }
                 onStateChange={ this.isMenuOpen }
           >
+            <div>
+            <span> </span>
+            <span> Hegel's Science of Logic, rendered as a graph.  </span> <br /><br />
+            <span> Node's refer to concepts, edges refer to connections between concepts in use.  </span> <br /><br />
+            <span> Nodes can be filtered either absolutely (by frequency) or relatively (the frequency of their edge pairs). </span> <br /><br />
+            <span> Edges can be filtered by weight (frequency). </span> <br /><br />
+            <span> Edge weights can be measured in up to three degrees </span> <br /><br />
+            <span> Click on an edge to query the passages that contain that edge pair, sorted by the relative importance of the passage </span>
+            </div>
             {/*
             <a id="home" className="menu-item" href="/">Home</a>
             <a id="about" className="menu-item" href="/about">About</a>
             <a id="contact" className="menu-item" href="/contact">Contact</a>
             */}
-           {/*} <a onClick={ this.showSettings } className="menu-item--small" href="/">Settings</a> */}
+           { /* <a onClick={ this.showSettings } className="menu-item--small" href="/">Settings</a> */}
          </Menu>
         
         <div id="page-wrap">
           { this.state.nodes ? <ForceGraph3D
                                 ref={el => { this.fg = el; }}
                                 graphData={this.state.nodes}
-                                linkWidth={0}
+                                linkWidth={.5}
                                 linkAutoColorBy={d => console.log(d)}
                                 onLinkClick={(link)=>console.log(link)}
+                                onLinkHover={this._handleLinkHover}
                                 onNodeClick={this._handleClick}
                                 nodeThreeObject={node => {
                                  
@@ -137,10 +145,12 @@ export default class AllCampus extends React.Component {
                                 
                               /> : 'LOADING' }
           <DatGui data={this.state.data} onUpdate={this.handleUpdate}>
-            <DatSelect path='FilterType' label="Node Filter" options={['Absolute density', 'Relative density']} /> 
+            <DatSelect path='filterType' label="Node Filter" options={['Absolute density', 'Relative density']} /> 
             <DatNumber path='NodeDensity' label='Node Density' min={300} max={10000} step={1} />
+            <DatSelect path='edgeDensityDegrees' label="Edge Degrees" options={['1', '2', '3']} /> 
+            <DatNumber path='degreeRange' label='Degree Range' min={1} max={100} step={1} />
             <DatNumber path='EdgeDensity' label='Edge Density' min={1} max={150} step={1} />
-            <DatButton label={this.state.loading} onClick={()=> this.state.loading === 'RENDER' ? this.updateGraph(this.state.data.NodeDensity) : ''  } />
+            <DatButton label={this.state.loading} onClick={()=> this.state.loading === 'RENDER' ? this.updateGraph(false) : ''  } />
           </DatGui> 
         </div>
       </div>

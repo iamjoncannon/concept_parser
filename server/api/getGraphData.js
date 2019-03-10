@@ -5,12 +5,53 @@ const edgeClip = require('./../../parser/edge_clip')
 
 async function getGraphData(query){
 
-	let filterType 
+	console.log(query)
+	/*
+		{ NodeDensity: '9000',
+		  EdgeDensity: '100',
+		  filterType: 'Absolute density',
+		  degreeRange: '30',
+		  edgeDensityDegrees: '1' }
+	*/
+
+	let filterType = query.filterType === 'Absolute density' ? 'weight' : 'relativeweight';
+	let queryFactor = query.filterType === 'Absolute density' ? 1 : 3000;
+
+	colorFactor = (weight) => {
+
+		let { edgeDensityDegrees, EdgeDensity, degreeRange } = query
+
+		let colors = ["#FF0000", "#FFFFFF", "#008000"]
+
+		if(edgeDensityDegrees === '1'){
+
+			return colors[0]
+		}
+
+		if(edgeDensityDegrees === '2'){
+
+			let part
+
+			weight > Number(EdgeDensity) + Number(degreeRange) ? part = 0 : part = 1 ;
+
+			return colors[part]
+		}
+
+		if(edgeDensityDegrees === '3'){
+
+			let part
+
+			weight > Number(EdgeDensity) + Number(degreeRange) ? part = 0 : 
+			weight > Number(EdgeDensity) + (Number(degreeRange)/2) ? part = 1 : part = 2;
+
+			return colors[part]
+		}
+	}
 
 	let concepts = await Concept.findAll({
 		where: {
-			weight : {
-				[Op.gt]: query.NodeDensity
+			[filterType] : {
+				[Op.gt]: query.NodeDensity * queryFactor
 			},
 		},
 		attributes: ['id', 'name', 'weight']
@@ -22,35 +63,17 @@ async function getGraphData(query){
 
 	let conceptCache = { }
 
-
 	for(let concept of concepts){
 
 		conceptCache[concept.id] = true
 
 		try {
-
-			// theseEdges = await EdgeWeight.findAll({
-			// 				where : {
-								
-			// 					  [Op.or]: [
-			// 					    {
-			// 					      sourceid: concept.id
-			// 					    },
-			// 					    {
-			// 					      targetid: concept.id
-			// 					    }
-			// 					  ]
-			// 				},
-			// 				// attributes: ['sourceId', 'targetId']
-			// 			})
-
 				theseEdges = await EdgeWeight.findAll({
 							where : {
 								
 								      sourceid: concept.id
 								   
 									},
-							// attributes: ['sourceId', 'targetId']
 						})
 			
 			theseEdges = theseEdges
@@ -59,19 +82,17 @@ async function getGraphData(query){
 								.map(function(data){
 
 									let newObject = {
-														
+										name : '',	
 										source: data.sourceid,
 										target: data.targetid,
 										weight: data.weight,
-										color: "#FF0000"
+										color: colorFactor(data.weight)
 									}
 									
 									return newObject
 								})
 
-			// theseEdges.filter((edge, i) => !edges.splice(1, i).includes(edge))
 			edges.push(...theseEdges)
-
 		}
 		catch(err){
 			console.log(err)
@@ -91,7 +112,6 @@ async function getGraphData(query){
 								} ) ,
 		nodes: concepts
 				.filter(node => edgeCache[node.id])
-				// .forEach(node => console.log(node.id, edgeCache[node.id]))
 	}
 
 	return data

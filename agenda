@@ -1,17 +1,36 @@
 
-How Do Android's Read Philosophy?
+How Would An Android's Read Philosophy?
+
+good searches 
+			- relative density
+				node density 9000
+				edge density 100
+
+			- relative density, 
+				node density 300, 
+				edge density 102
+				edge degrees 1
+
+			- relative density
+				node density 1764
+				edge degrees 3
+				degree range 30
+				edge density 100
+
+			- relative density
+				node density 750
+				edge degrees 3
+				degree range 93
+				edge density 40
+				
 
 User stories
 
-i click on the root URL and the graph pops up (with a specified output that looks cool)
+xxxx i click on the root URL and the graph pops up (with a specified output that looks cool)
 
 	- root URL performs a specified query and renders the results
 
-i want to choose between the whole book and one section in the book
-
-	- would have to create separate edge weight tables for each section and then query those
-
-i want to pick the node weight (weight of the nodes) and edge density (relative weight of each edge by those nodes) to render
+xxx i want to pick the node weight (weight of the nodes) and edge density (relative weight of each edge by those nodes) to render
 
 	- filter and color code edges by density 
 
@@ -23,9 +42,14 @@ i want to query for the densest sentences
 
 	- separate DAT gui folder with sentence queries, appears in side bar
 
-i want to see a loading message bewteen calling the api and the
+i want to type in a concept and see a graph of its interrelationships, then look at the sentences it appears in 
+
+xxxx i want to see a loading message bewteen calling the api and the
 data being loaded 
 
+i want to choose between the whole book and one section in the book
+
+	- would have to create separate edge weight tables for each section and then query those
 
 
 
