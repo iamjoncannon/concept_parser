@@ -5,15 +5,6 @@ const edgeClip = require('./../../parser/edge_clip')
 
 async function getGraphData(query){
 
-	console.log(query)
-	/*
-		{ NodeDensity: '9000',
-		  EdgeDensity: '100',
-		  filterType: 'Absolute density',
-		  degreeRange: '30',
-		  edgeDensityDegrees: '1' }
-	*/
-
 	let filterType = query.filterType === 'Absolute density' ? 'weight' : 'relativeweight';
 	let queryFactor = query.filterType === 'Absolute density' ? 1 : 3000;
 
@@ -97,7 +88,6 @@ async function getGraphData(query){
 		catch(err){
 			console.log(err)
 		}
-
 	}
 
 	let edgeCache = { }

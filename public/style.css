@@ -62,9 +62,12 @@ body {
 
 /* General sidebar styles */
 .bm-menu {
-  background: ##A9A9A9;
+  background: #808080;
+  /*background: ##A9A9A9;*/
   padding: 2.5em 1.5em 0;
   font-size: 1.15em;
+  opacity: .95;
+
 }
 
 /* Morph shape necessary with bubble or elastic */
@@ -74,7 +77,7 @@ body {
 
 /* Wrapper for item list */
 .bm-item-list {
-  color: #b8b7ad;
+  color: ##A9A9A9;
 }
 
 /* Styling of overlay */

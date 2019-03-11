@@ -5,11 +5,8 @@ import SpriteText from 'three-spritetext';
 import 'react-dat-gui/build/react-dat-gui.css';
 import DatGui, { DatFolder, DatSelect, DatBoolean, DatColor, DatNumber, DatString, DatButton } from 'react-dat-gui';
 import { slide as Menu } from 'react-burger-menu'
-
-// import { connect } from 'react-redux'
-// import { axnTHUNK_GET_ALL_CAMPUS, axnTHUNK_DELETE_CAMPUS } from './../reducers/thunx'
-// import { Link, withRouter } from 'react-router-dom'
-// import  Student_list  from './student_list'
+import Spiel from './spiel'
+import SentenceHeader from './sentence_header'
 
 export default class AllCampus extends React.Component {
 
@@ -20,6 +17,8 @@ export default class AllCampus extends React.Component {
       maxNodeWeight : 22078,
       loading: 'RENDER',
       openSide : true,
+      scene : 'opening',
+      sentences: [],
       data: {
         filterType: 'Absolute density',
         package: 'react-dat-gui',
@@ -42,7 +41,7 @@ export default class AllCampus extends React.Component {
 
   _handleClick = node => {
           // Aim at node from outside it
-          // console.log(node)
+        
           const distance = 40;
           const distRatio = 1 + distance/Math.hypot(node.x, node.y, node.z);
           this.fg.cameraPosition(
@@ -73,10 +72,6 @@ export default class AllCampus extends React.Component {
       })
   }
 
-  linkColor = (weight) => {
-
-  }
-
   showSettings (event) {
     event.preventDefault();
   }
@@ -88,6 +83,31 @@ export default class AllCampus extends React.Component {
     })
 
   };
+
+  _handleLinkClick = (link) => {
+
+    let nextScene
+
+    this.state.scene = 'opening' ? nextScene = 'first' : nextScene = 'main'
+
+    let combinedQuery = `?source=${link.source.id}&target=${link.target.id}`
+
+    axios.get(`/api/hegel/data/sentences/${combinedQuery}`).then(sentences => 
+
+      this.setState({
+        sentences : JSON.parse(sentences.data),
+        openSide: true,
+        scene: nextScene,
+        loading: 'RENDER'
+      })
+
+      )
+
+    this.setState({
+        loading: '...loading'
+      })
+
+  }
 
   _handleLinkHover = (link, prevLink) => {
 
@@ -101,31 +121,18 @@ export default class AllCampus extends React.Component {
   }
 
   render () {
-
+    
     return (
       <div id="App">
           <Menu pageWrapId={"page-wrap"} 
                 outerContainerId={"App"}
-                width={ '30%' }
+                width={ '50%' }
                 isOpen={ this.state.openSide }
                 onStateChange={ this.isMenuOpen }
           >
-            <div>
-            <span> </span>
-            <span> Hegel's Science of Logic, rendered as a graph.  </span> <br /><br />
-            <span> Node's refer to concepts, edges refer to connections between concepts in use.  </span> <br /><br />
-            <span> Nodes can be filtered either absolutely (by frequency) or relatively (the frequency of their edge pairs). </span> <br /><br />
-            <span> Edges can be filtered by weight (frequency). </span> <br /><br />
-            <span> Edge weights can be measured in up to three degrees </span> <br /><br />
-            <span> Click on an edge to query the passages that contain that edge pair, sorted by the relative importance of the passage </span>
-            </div>
-            {/*
-            <a id="home" className="menu-item" href="/">Home</a>
-            <a id="about" className="menu-item" href="/about">About</a>
-            <a id="contact" className="menu-item" href="/contact">Contact</a>
-            */}
-           { /* <a onClick={ this.showSettings } className="menu-item--small" href="/">Settings</a> */}
-         </Menu>
+            { this.state.scene === 'opening'  ? <Spiel /> : <SentenceHeader sentences={this.state.sentences}/> }
+            
+          </Menu>
         
         <div id="page-wrap">
           { this.state.nodes ? <ForceGraph3D
@@ -133,7 +140,7 @@ export default class AllCampus extends React.Component {
                                 graphData={this.state.nodes}
                                 linkWidth={.5}
                                 linkAutoColorBy={d => console.log(d)}
-                                onLinkClick={(link)=>console.log(link)}
+                                onLinkClick={this._handleLinkClick}
                                 onLinkHover={this._handleLinkHover}
                                 onNodeClick={this._handleClick}
                                 nodeThreeObject={node => {
