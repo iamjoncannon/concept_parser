@@ -19,6 +19,7 @@ export default class AllCampus extends React.Component {
       openSide : true,
       scene : 'opening',
       sentences: [],
+      edges: [],
       data: {
         filterType: 'Absolute density',
         package: 'react-dat-gui',
@@ -29,7 +30,6 @@ export default class AllCampus extends React.Component {
         degreeRange: 30
       }
     }
-
   }
 
   async componentDidMount(){
@@ -98,7 +98,8 @@ export default class AllCampus extends React.Component {
         sentences : JSON.parse(sentences.data),
         openSide: true,
         scene: nextScene,
-        loading: 'RENDER'
+        loading: 'RENDER',
+        edges: [link.source.name, link.target.name]
       })
 
       )
@@ -121,6 +122,8 @@ export default class AllCampus extends React.Component {
   }
 
   render () {
+
+    console.log(this.state.edges)
     
     return (
       <div id="App">
@@ -130,7 +133,7 @@ export default class AllCampus extends React.Component {
                 isOpen={ this.state.openSide }
                 onStateChange={ this.isMenuOpen }
           >
-            { this.state.scene === 'opening'  ? <Spiel /> : <SentenceHeader sentences={this.state.sentences}/> }
+            { this.state.scene === 'opening'  ? <Spiel /> : <SentenceHeader sentences={this.state.sentences} edges={this.state.edges} /> }
             
           </Menu>
         
@@ -139,7 +142,6 @@ export default class AllCampus extends React.Component {
                                 ref={el => { this.fg = el; }}
                                 graphData={this.state.nodes}
                                 linkWidth={.5}
-                                linkAutoColorBy={d => console.log(d)}
                                 onLinkClick={this._handleLinkClick}
                                 onLinkHover={this._handleLinkHover}
                                 onNodeClick={this._handleClick}
@@ -164,20 +166,3 @@ export default class AllCampus extends React.Component {
     )
   }
 }
-                                  // sprite.color = node.color;
-            // <DatString path='package' label='Package' />
-                                // linkCurvature={0.25}
-            // <DatBoolean path='isAwesome' label='Awesome?' />
-            // <DatColor path='feelsLike' label='Feels Like' />
-
-/*
-
-<ForceGraph3D 
-                                
-                                graphData={this.state.nodes} 
-                                
-                                linkWidth={0}
-                                linkDirectionalArrowRelPos={1}
-                              /> : '' 
-
-*/
