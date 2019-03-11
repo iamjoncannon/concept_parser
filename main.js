@@ -3,13 +3,35 @@
 const { db  } = require('./server/db')
 const app = require('./server')
 const PORT = 1337
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
-async function SyncDb(){
+// const pageParser = require('./parser/sentence_node')
+const { Sentence, Concept, Edge } = require('./server/db/index')
+// let getGraphData = './server/api/getGraphData'
+
+let calculateEdgeWeight = require('./parser/calculate_edgeweight')
+
+// const sentenceParser = require('./parser/sentence_parser')
+
+// const concept_processor = require('./parser/concept_processor')
+
+// const concept_relative_weight = require('./parser/concept_relative_weight')
+
+
+async function startServer(){
 
 	await db.sync()
 
+	// let allEdges = await Edge.findAll()
+
+	
+	// calculateEdgeWeight(allEdges)
+
+
     console.log('db synced')
-    app.listen(PORT, () => console.log(`studiously serving silly sounds on port ${PORT}`))
+    
+    app.listen(PORT, () => console.log(`serving on port ${PORT}`))
 }
 
-SyncDb()
+startServer()

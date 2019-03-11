@@ -21,6 +21,8 @@
     "natural": "^0.6.3",
     "pg": "^7.4.3",
     "react": "^16.3.2",
+    "react-burger-menu": "^2.6.5",
+    "react-dat-gui": "^2.2.0",
     "react-dom": "^16.3.2",
     "react-force-graph": "^1.20.3",
     "react-redux": "^5.0.7",
@@ -29,7 +31,8 @@
     "redux-devtools-extension": "^2.13.7",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
-    "sequelize": "^4.37.8"
+    "sequelize": "^4.37.8",
+    "three-spritetext": "^1.0.6"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

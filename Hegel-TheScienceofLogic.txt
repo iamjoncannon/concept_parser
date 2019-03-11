@@ -943,6 +943,9 @@ volume one
 The Objective Logic Book One
 The Doctrine of Being
 preface to the first edition
+
+*** HERES THE START OF THE BOOK ***
+
 The complete transformation that the ways of philosophical thought have undergone among us in the past twenty-five odd years, the higher standpoint in self-awareness that spirit has attained in this period of time, has so far had little influence on the shape of the logic.
 What was hitherto called "metaphysics" has been, so to speak, extirpated root and branch, and has vanished from the ranks of the sciences. Where are the voices still to be heard of the ontology of former times, of the rational psychology, the cosmology, or indeed, even of the natural theology of the past, or where are they allowed to be heard? Inquiries, for instance, into the immateriality of the soul, into mechanical and final causes ­ where is interest in them still to be found? Even the former proofs of God's existence are cited only out of historical interest, or for the purpose of edification and the uplifting of the mind. The fact is that interest, whether in the content or in the form of the former metaphysics, or in both together, has been lost. Remarkable as it is if a people has become indifferent, for instance, to its constitutional law, to its convictions, its moral customs and virtues, just as remarkable it is when a people loses its metaphysics ­ when the spirit engaged with its pure essence no longer has any real presence in its life.
 The exoteric teaching of the Kantian philosophy ­ that the understanding ought not to be allowed to soar above experience, lest the cognitive faculty become a theoretical reason that by itself would beget nothing but mental fancies ­ this was the justification coming from the scientific camp for
@@ -7293,11 +7296,14 @@ But as so repelled, the determinations are not self-possessed ­ do not emerge as
 
 39 an sichseiende.
 
-The becoming of essence
+The becoming of essence 
+
 
 335
 
-Being in general and the being or immediacy of the different determinacies have thereby vanished just as much as the in-itselfness, and the unity is being, immediately presupposed totality, so that it is only this simple self-reference, mediated by the sublation of this presupposition, and this presupposedness, the immediate being, is itself only a moment of its repelling: the original self-subsistence and self-identity are only as the resulting infinite self-rejoining. And so is being determined as essence ­ being which, through the sublation of being, is simple being with itself.
+
+
+*** doctrine of essence *** Being in general and the being or immediacy of the different determinacies have thereby vanished just as much as the in-itselfness, and the unity is being, immediately presupposed totality, so that it is only this simple self-reference, mediated by the sublation of this presupposition, and this presupposedness, the immediate being, is itself only a moment of its repelling: the original self-subsistence and self-identity are only as the resulting infinite self-rejoining. And so is being determined as essence being which, through the sublation of being, is simple being with itself.
 
 21.383
 
@@ -9312,6 +9318,8 @@ differentiates itself: on the one hand, into the totality (the heretofore passiv
 The Science of Subjective Logic or The
 
 Doctrine of the Concept
+
+*** doctrine of the concept ***
 
 12.5
 
