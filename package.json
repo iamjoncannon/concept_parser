@@ -7,7 +7,7 @@
     "start-dev": "npm run build-watch & npm run start-server",
     "start-server": "nodemon -L --watch server main.js -e html,js,css",
     "build-watch": "webpack -w",
-    "start": "echo 'Running server for production - developers, use npm run start:dev for development' && node main",
+    "start": "npm run build-watch & npm run start-server",
     "seed": "node seed.js"
   },
   "keywords": [],
