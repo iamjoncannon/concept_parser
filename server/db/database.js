@@ -6,7 +6,7 @@ const pkg = require('../../package.json')
 
 console.log(chalk.yellow('Opening database connection'))
 
-const db = new Sequelize(`postgres://localhost:5432/${pkg.name}`, {
+const db = new Sequelize(process.env.DATABASE_URL, {
   logging: false // so we don't see all the SQL queries getting made
 })
 
