@@ -1,0 +1,34 @@
+
+what to add to presentation
+
+	- other applications 
+	- difficult traversing complex texts with complex relationships between concepts
+
+
+think about modelling relationships between concepts in a text, particularly a conceptually dense text
+
+library- d3 force graph, actually a react binding, as well as Dat GUI, the back end is Express/Sequelize
+
+hypothesis- concept relationships could be modelled just based on cooccurrence, used in the same passage
+
+first step - natural language processing to extract concepts from each sentence, as well as all the edges within the passage (it took awhile- i went to get pizza)
+
+	- used two models- one just of frequency (number of times the concept was used), and basically its relative importance (the weight of all its edge pairs, or the concepts to which that concept has an edge)
+
+	"a concept is important because its used often, its important because its used in sentences with concepts which are themselves important"
+
+so the simpler model is just measuring the use of the concepts itself, as well as cooccurance (show node density filter)
+
+this isn't useful information- a complete graph - all or virtually all concepts are related to each other (this is what it feels like reading the text in the first place)
+
+but, if we filter the density of the node as well as the density of the edges, we can find more precise information about the relationships 
+
+demonstrate the degree filter - can display relative edge weights to measure the strength of the relationships
+
+finally, if you click on an edge, we can query the passages that contain that edge pair, which are weighted by the density of the passage- the density of the nodes it contains
+
+ next steps- 
+
+- revisit and improve the natural language processing as well as the edge extraction (guarantee no duplication, handle multiple edge issues)
+- some other features - query by concept, query passages generally
+- ultimate goal- perform a graph traversal and query for passages that contain all the nodes in the traversal, weighted by the strongest passage

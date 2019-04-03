@@ -1,0 +1,91 @@
+
+How Would An Android's Read Philosophy?
+
+good searches 
+			- relative density
+				node density 9000
+				edge density 100
+
+			- relative density, 
+				node density 300, 
+				edge density 102
+				edge degrees 1
+
+			- relative density
+				node density 1764
+				edge degrees 3
+				degree range 30
+				edge density 100
+
+			- relative density
+				node density 750
+				edge degrees 3
+				degree range 93
+				edge density 40
+				
+
+User stories
+
+xxxx i click on the root URL and the graph pops up (with a specified output that looks cool)
+
+	- root URL performs a specified query and renders the results
+
+xxx i want to pick the node weight (weight of the nodes) and edge density (relative weight of each edge by those nodes) to render
+
+	- filter and color code edges by density 
+
+i want to click on a node and see the densest sentences it appears in
+
+	- click on node and sidebar pops up to the left with all the sentences it appears in, sorted by
+
+i want to query for the densest sentences
+
+	- separate DAT gui folder with sentence queries, appears in side bar
+
+i want to type in a concept and see a graph of its interrelationships, then look at the sentences it appears in 
+
+xxxx i want to see a loading message bewteen calling the api and the
+data being loaded 
+
+i want to choose between the whole book and one section in the book
+
+	- would have to create separate edge weight tables for each section and then query those
+
+
+
+Agenda
+
+Edge Weight Table
+
+Sentence Weight Calculation
+
+
+WHAT IS MY MVP
+
+Front End
+	- have the rendered graph
+	- need simplish set of controls- plus minus, apply
+	- MVP controls - denser nodes, sections of text
+	- front end receives raw data and parses/converts to graph format
+	- MVPish goal- loading spinner
+
+Data Servicing stack- MVP
+
+	- query to back end to return specific slice of data
+	- back end API to:
+		- take query 
+		- perform lookup
+		- return to front end
+
+
+
+	- just using "req.query" parameters
+	- can load a dummy query in Express route then move to front end
+	- back end API- function that takes parameters from front end, performs lookup
+
+
+
+
+STRETCH GOALS
+		
+		- stretch goal controls- 
