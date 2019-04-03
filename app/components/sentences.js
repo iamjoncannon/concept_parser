@@ -8,7 +8,7 @@ export default function Sentences( props ){
                     <ul>
                     {sentence.content}
                     <br />
-                    ({sentence.id})
+                    Density: {sentence.weight}
                     </ul>
                
             )})

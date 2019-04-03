@@ -25,27 +25,47 @@ router.get('/hegel/data', async (req, res, next)=>{
 
 router.get('/hegel/data/sentences', async (req, res, next)=>{
   
-	console.log(req.query)
+	// console.log(req.query)
 	// { source: '181', target: '635' }
 
-  let edges = await Edge.findAll({
+  let edges =[]
+
+  edges.push(...await Edge.findAll({
   	where: {
 		sourceId : req.query.source,
 		targetId : req.query.target
   	}
-  })
+  }))
+
+  edges.push(...await Edge.findAll({
+    where: {
+    sourceId : req.query.target,
+    targetId : req.query.source
+    }
+  }))
+
+  let edgeSet = new Set()
+
+  edges.forEach(edge => {edgeSet.add(edge.locationId)})
+
+  let newEdges = Array.from(edgeSet)
+
+  console.log(edges.length, newEdges.length)
 
   let payload = []
 
-  for( let edge of edges){
+  for( let edge of newEdges){
 
-  	let thisLoad = await Sentence.findById(edge.locationId)
+  	let thisLoad = await Sentence.findById(edge)
 
   	payload.push(thisLoad)
 
   }
 
   payload = payload.map(sentence => sentence.dataValues)
+                    .sort((a, b) => b.weight - a.weight)
+
+
 
   res.json(JSON.stringify(payload))
 
