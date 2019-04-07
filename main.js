@@ -13,8 +13,4 @@ async function startServer(){
     app.listen(PORT, () => console.log(`serving on port ${PORT}`))
 }
 
-
-
 startServer()
-
-

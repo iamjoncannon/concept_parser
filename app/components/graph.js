@@ -8,7 +8,7 @@ import { slide as Menu } from 'react-burger-menu'
 import Spiel from './spiel'
 import SentenceHeader from './sentence_header'
 
-export default class AllCampus extends React.Component {
+export default class Graph extends React.Component {
 
   constructor(){
     super()
@@ -122,8 +122,6 @@ export default class AllCampus extends React.Component {
   }
 
   render () {
-
-    console.log(this.state.edges)
     
     return (
       <div id="App">
