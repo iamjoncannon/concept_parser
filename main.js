@@ -2,7 +2,7 @@
 
 const { db  } = require('./server/db')
 const app = require('./server')
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 3000
 
 async function startServer(){
 

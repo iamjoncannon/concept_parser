@@ -99,6 +99,8 @@ probably not an issue to be pushing these exactly remotely, but better this way
 
     run "sudo nginx -t" to check that everything is configged correctly
 
+    run "sudo nginx -T" to check that the engine server was added
+
     run "sudo service nginx restart" for good measure
 
 5. run sudo npm i  
