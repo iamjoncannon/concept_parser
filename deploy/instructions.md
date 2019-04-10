@@ -114,20 +114,22 @@ probably not an issue to be pushing these exactly remotely, but better this way
 
 2. complete the ecosystem.config file.
 
+This is going to pull varibles from bash, so this will fail if you haven't done the .bashrc process described above
+
 This is the last one that worked:
 
 ```js
 
 module.exports = {
   apps: [{
-    name: 'Rawww', // the name of the pm2 process
-    script: './main.js' // this gets daemonized by pm2 remotely
+    name: 'Rawww',
+    script: './main.js'
   }],
   deploy: {
     production: {
       user: 'ubuntu',
-      host: 'ec2-54-69-228-6.us-west-2.compute.amazonaws.com',
-      key: '~/.ssh/esee.pem',
+      host: process.env.addy,
+      key: process.env.key,
       ref: 'origin/master',
       repo: 'git@github.com:iamjoncannon/Raw.git',
       path: '/home/ubuntu/Raw',
@@ -141,12 +143,12 @@ module.exports = {
 3. run locally:
 
 ```bash
-pm2 deploy ecosystem.config.js production setup
+key=$key addy=$addy pm2 deploy ecosystem.config.js production setup
 ```
 
 this should clear with the errors described below
 
-4. commit locally and push the ecosystem file to the repo
+4. commit locally and push the ecosystem file to the repo  
 
 5. run locally:
 
