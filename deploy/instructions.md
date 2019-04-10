@@ -174,8 +174,242 @@ notes:
 
     but it didn't affect the app
 
-    you can't access the .config folder to change these files, it must be an AWS thing
+    can access if you run sudo su to switch to super user
 
+    but files don't actually exist... weird
+
+
+#### Part Four- Set up Postgres
+
+
+using this https://github.com/snowplow/snowplow/wiki/Setting-up-PostgreSQL
+
+basic process- install postgres, reconfigure so it will communicate with the internet, create users, upload the data from a table, allow users to access the data
+
+
+1. make sure Security Group includes setting for 5432- something like security group, inbound. (Setting is "anywhere".) This allows the client to hit the postgres server through its port
+
+2. edit the config (should figure out how to do this automatically in the future)
+
+
+a. pg_hba.conf file
+
+
+find hba_file:
+
+```sql
+SHOW hba_file;
+```
+
+its actually here:
+
+/etc/postgresql/10/main/pg_hba.conf
+
+```bash
+sudo nano /etc/postgresql/10/main/pg_hba.conf
+```
+
+this
+```
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# "local" is for Unix domain socket connections only
+local   all             all                                     ident
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            ident
+# IPv6 local connections:
+host    all             all             ::1/128                 ident
+```
+
+to this
+
+```
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# "local" is for Unix domain socket connections only
+local   all             all                                     trust
+# IPv4 local connections:
+host    all             power_user      0.0.0.0/0               md5
+host    all             other_user      0.0.0.0/0               md5
+host    all             storageLoader   0.0.0.0/0               md5
+# IPv6 local connections:
+host    all             all             ::1/128                 md5
+```
+
+I just muted the existing code and copied and pasted the above
+
+b. postgresql.config file
+
+find config_file:
+
+```sql
+SHOW config_file;
+```
+
+```bash
+sudo nano /etc/postgresql/10/main/postgresql.conf
+```
+
+Uncomment line 59 and change to all addresses:
+
+```
+#listen_addresses = 'localhost'    
+```
+
+to 
+```
+listen_addresses='*'
+```
+
+
+And uncomment line 63: 
+
+```
+port = 5432
+```
+
+restart postgres:
+
+```
+sudo /etc/init.d/postgresql restart
+```
+
+3. configure user credentials
+
+log into postgres:
+
+```
+sudo su - postgres
+$ psql
+```
+
+create users
+
+whats up with these passwords?
+
+they assume theyre are set in the bash environment
+
+root admin:
+```sql
+CREATE USER power_user SUPERUSER;
+ALTER USER power_user WITH PASSWORD '$poweruserpassword';
+```
+
+other user:
+```sql
+CREATE USER other_user NOSUPERUSER;
+ALTER USER other_user WITH PASSWORD '$otheruserpassword';
+```
+
+create a test database:
+```sql
+CREATE DATABASE Test WITH OWNER other_user;
+```
+
+
+now you can log back into postgres with the power user:
+
+```bash
+psql -U power_user test
+```
+
+grant clientside user accounts:
+
+```sql
+CREATE USER storageloader PASSWORD '$storageloaderpassword';
+
+GRANT USAGE ON SCHEMA atomic TO storageloader;
+GRANT INSERT ON TABLE   "atomic"."events" TO storageloader;
+```
+
+### psql/sql etc
+
+#### shell into database remotely:
+
+```bash
+PGPASSWORD=$poweruserpassword psql -h <HOSTNAME> -U power_user -d Test -p <PORT> 
+```
+
+my solution:
+
+```bash
+PGPASSWORD=yadayada psql -h $addy -U power_user -d test -p 5432
+```
+have to paste in "$poweruserpassword" which is blank now... in the future look into changing the password 
+
+#### change password:
+
+access via "sudo su - postgres && psql"
+
+```sql
+ALTER USER power_user WITH PASSWORD 'yadayada';
+```
+
+
+#### upload sql databases 
+
+create .sql file 
+
+pg_dump --format=p dbname=graphing_Hegel -f graphing_Hegel.sql 
+
+
+one strategy - enter locally and try uploading the file
+
+psql graphing_Hegel < graphing_Hegel.sql
+
+databasename must be created before importing.
+
+psql on ubuntu is set with default role "ubuntu" as user
+
+lets try this:
+
+going to set environment variable $psqlpw to the actual password
+
+```sql
+CREATE USER ubuntu SUPERUSER;
+ALTER USER ubuntu WITH PASSWORD '$psqlpw';
+```
+
+trying to upload the database with a user defined that doesn't exist
+remotely:
+
+ERROR:  role "jonathancannon" does not exist
+
+```sql
+CREATE USER jonathancannon SUPERUSER;
+ALTER USER jonathancannon WITH PASSWORD '$psqlpw';
+```
+
+with this user defined, nav to project directory and run:
+
+psql graphing_Hegel < graphing_Hegel.sql
+
+and it uploads no probs :)
+
+#### calling from the client
+
+client is already set up to call "process.env.DATABASE_URL", so all we need to do is 
+set this variable when node launches
+
+can set this in the server's .bashrc
+
+for the Hegel project, the client is not connecting to the database directly, the express server is calling the postgres server 
+
+format of postgres url is:
+
+"postgres://YourUserName:YourPassword@YourHost:5432/YourDatabase"
+
+so solution would be:
+
+postgres://jonathancannon:$psqlpw@$addy:5432/graphing_Hegel
+
+and store the same addy variable from the local machine
+
+the remote server can access the variables because its running on the same system
+
+```bash
+echo postgres://jonathancannon:$psqlpw@$addy:5432/graphing_Hegel
+```
 
 # AWS config on local machine 
 

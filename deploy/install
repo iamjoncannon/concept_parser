@@ -8,7 +8,7 @@ ssh -T -i $1 $2 << 'ENDSSH'
 curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -
 sudo apt-get install -y nodejs
 sudo npm i -g pm2 -y
-sudo apt install postgresql postgresql-contrib -y
+sudo apt install postgresql postgresql-contrib postgresql-server postgresql-devel -y
 sudo apt-get -y install nginx
 exit
 
