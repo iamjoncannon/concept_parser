@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 8080
 
 async function startServer(){
 
-	await db.sync()
+	// await db.sync()
 
     console.log('db synced')
     

@@ -25,11 +25,16 @@ these are the package.json scripts:
 This is the AWS CLI script to launch an EC2- careful - don't wanna blow the free tier :p
 
 ```bash
-aws ec2 run-instances --launch-template LaunchTemplateId=lt-04dfc64765fa9b907,Version=1 >> ./deploy/ec2Init.json
+aws ec2 run-instances --launch-template LaunchTemplateId=lt-04dfc64765fa9b907,Version=1 
 ```
 
 template data is listed at the bottom.
 
+you can get the public IP after it launch by calling:
+
+```bash
+aws ec2 describe-instances
+```
 
 
 # Its a Process
@@ -59,7 +64,8 @@ probably not an issue to be pushing these exactly remotely, but better this way
 
 2. "npm run dep-install" - shells into the remote server and runs all the installation scripts via pseudo-terminal (putting nginx, node, postgres, pm2 on the remote instance)
 
-
+// permissions issue chmod not running in script - put in separate script
+// tweaked install file
 
 ### Part Two- on the remote machine
 

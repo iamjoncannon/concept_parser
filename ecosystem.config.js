@@ -1,6 +1,6 @@
 module.exports = {
   apps: [{
-    name: 'Rawww',
+    name: 'graphing_Hegel',
     script: './main.js'
   }],
   deploy: {
