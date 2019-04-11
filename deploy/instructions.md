@@ -393,6 +393,8 @@ psql graphing_Hegel < graphing_Hegel.sql
 
 and it uploads no probs :)
 
+
+
 #### postgres URL
 
 the client is not connecting to the database directly, the express server is calling the postgres server on the same machine via loopback localhost
