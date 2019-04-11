@@ -411,6 +411,19 @@ the remote server can access the variables because its running on the same syste
 echo postgres://jonathancannon:$psqlpw@$addy:5432/graphing_Hegel
 ```
 
+getting this error:
+
+no pg_hba.conf entry for host "172.31.30.198", user "jonathancannon", database "graphing_Hegel", SSL on
+
+
+
+
+
+
+
+
+
+
 # AWS config on local machine 
 
 AWS guide to installing Python CLI client

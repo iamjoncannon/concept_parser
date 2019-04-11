@@ -14,7 +14,7 @@ module.exports = {
       ref: 'origin/deploying',
       repo: 'https://github.com/iamjoncannon/concept_parser.git',
       path: '/home/ubuntu/concept_parser',
-      'post-deploy': 'echo $pgaddy && sudo npm install && sudo pm2 startOrRestart ecosystem.config.js'
+      'post-deploy': 'sudo npm install && sudo pm2 startOrRestart ecosystem.config.js'
     }
   }
 }
