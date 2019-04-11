@@ -221,7 +221,7 @@ host    all             all             127.0.0.1/32            ident
 host    all             all             ::1/128                 ident
 ```
 
-to this
+to this 
 
 ```
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
@@ -234,6 +234,13 @@ host    all             other_user      0.0.0.0/0               md5
 host    all             storageLoader   0.0.0.0/0               md5
 # IPv6 local connections:
 host    all             all             ::1/128                 md5
+```
+
+add this too (this was a two hour bug)
+
+```
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+host    all             all             127.0.0.1/32            trust
 ```
 
 I just muted the existing code and copied and pasted the above
@@ -386,14 +393,14 @@ psql graphing_Hegel < graphing_Hegel.sql
 
 and it uploads no probs :)
 
-#### calling from the client
+#### postgres URL
 
-client is already set up to call "process.env.DATABASE_URL", so all we need to do is 
-set this variable when node launches
+the client is not connecting to the database directly, the express server is calling the postgres server on the same machine via loopback localhost
 
-can set this in the server's .bashrc
+there will probably be a different solution if the database is on a separate machine
+aka microservicing.
 
-for the Hegel project, the client is not connecting to the database directly, the express server is calling the postgres server 
+this monolithic- http server and databse server are talking directly to each other
 
 format of postgres url is:
 
@@ -401,42 +408,29 @@ format of postgres url is:
 
 so solution would be:
 
-postgres://jonathancannon:$psqlpw@$addy:5432/graphing_Hegel
+postgres://jonathancannon:$psqlpw@$localhost:5432/graphing_Hegel
 
-and store the same addy variable from the local machine
-
-the remote server can access the variables because its running on the same system
-
-```bash
-echo postgres://jonathancannon:$psqlpw@$addy:5432/graphing_Hegel
-```
-
-getting this error:
-
-no pg_hba.conf entry for host "172.31.30.198", user "jonathancannon", database "graphing_Hegel", SSL on
+there were a bunch of errors revolving around the permissions inside the 
+postgres config file /etc/postgresql/10/main/pg_hba.conf
 
 connect ECONNREFUSED 127.0.0.1:5432
+no pg_hba.conf entry for host "172.31.30.198", user "jonathancannon", database "graphing_Hegel", SSL on
 
-127.0.0.1:5432
+the solution that worked was to add the following line giving full loopback 
+permissions
 
-0.0.0.0
+you actually added a couple of bash alias because you were going into the file
+so much and restarting psql
 
+alias pgconfig='sudo nano /etc/postgresql/10/main/pg_hba.conf'
+alias restartpg='sudo /etc/init.d/postgresql restart'
 
-local  all  ambari trust 
-host  all   ambari 0.0.0.0/0  trust 
-host  all   ambari ::/0 trust
+add this to the pg_hba file:
 
-
-# IPv4 local connections:
-
-host all all 127.0.0.1/32 md5
-
-host all all <ip address>/24 trust
-
-# IPv6 local connections: host all all ::1/128 md5
-
-Now, restart postgresql service.
-
+```
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+host    all             all             127.0.0.1/32            trust
+```
 
 
 # AWS config on local machine 
