@@ -415,12 +415,27 @@ getting this error:
 
 no pg_hba.conf entry for host "172.31.30.198", user "jonathancannon", database "graphing_Hegel", SSL on
 
+connect ECONNREFUSED 127.0.0.1:5432
+
+127.0.0.1:5432
+
+0.0.0.0
 
 
+local  all  ambari trust 
+host  all   ambari 0.0.0.0/0  trust 
+host  all   ambari ::/0 trust
 
 
+# IPv4 local connections:
 
+host all all 127.0.0.1/32 md5
 
+host all all <ip address>/24 trust
+
+# IPv6 local connections: host all all ::1/128 md5
+
+Now, restart postgresql service.
 
 
 
