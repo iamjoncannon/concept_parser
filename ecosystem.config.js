@@ -1,7 +1,10 @@
 module.exports = {
   apps: [{
     name: 'graphing_Hegel',
-    script: './main.js'
+    script: './main.js',
+    env: {
+      DATABASE_URL: '$pgaddy'
+    }
   }],
   deploy: {
     production: {
@@ -11,7 +14,7 @@ module.exports = {
       ref: 'origin/deploying',
       repo: 'https://github.com/iamjoncannon/concept_parser.git',
       path: '/home/ubuntu/concept_parser',
-      'post-deploy': 'DATABASE_URL=$pgaddy sudo npm install && sudo pm2 startOrRestart ecosystem.config.js'
+      'post-deploy': 'sudo npm install && sudo pm2 startOrRestart ecosystem.config.js'
     }
   }
 }
