@@ -5,10 +5,11 @@ import SpriteText from 'three-spritetext';
 import 'react-dat-gui/build/react-dat-gui.css';
 import DatGui, { DatFolder, DatSelect, DatBoolean, DatColor, DatNumber, DatString, DatButton } from 'react-dat-gui';
 import { slide as Menu } from 'react-burger-menu'
-import Spiel from './spiel'
+import Spiel from './spiel_mobile'
 import SentenceHeader from './sentence_header'
 import init from './init.json'
 import Media from 'react-media'
+import TouchManager from './TouchManager'
 
 let count = 0;  
 
@@ -40,9 +41,14 @@ export default class Graph extends React.Component {
   resize = () => {
 
     window.location.reload()
+
   }
 
   componentDidMount = async () => {
+
+    TouchManager.init();
+    TouchManager.clickHandler = this.onClick
+    TouchManager.forceGraphInstance = this.fg
 
     window.addEventListener("resize", ()=> {this.resize()});
 
@@ -59,6 +65,12 @@ export default class Graph extends React.Component {
   }
 
   handleUpdate = data => this.setState({ data })
+
+  onClick = (node) => {
+
+    _handleClick(node, 40)
+
+  }
 
   _handleClick = (node, distance) => {
 
@@ -161,22 +173,21 @@ export default class Graph extends React.Component {
   render () {
     
     return (
-
       <div id="App">
+
           <Menu pageWrapId={"page-wrap"} 
                 outerContainerId={"App"}
-                width={ '50%' }
+                width={ '100%' }
                 isOpen={ this.state.openSide }
                 onStateChange={ this.isMenuOpen }
           >
-            { this.state.scene === 'opening'  ? <Spiel /> : <SentenceHeader sentences={this.state.sentences} edges={this.state.edges} /> }
+            { this.state.scene === 'opening'  ? <Spiel />  : ''}
             
           </Menu>
         
         <div id="page-wrap">
 
           { this.state.nodes ? <ForceGraph3D
-                                resize={this.state.resize}
                                 ref={el => { this.fg = el; }}
                                 graphData={this.state.nodes}
                                 linkWidth={.5}
@@ -191,17 +202,6 @@ export default class Graph extends React.Component {
                                 }}
                                 
                               /> : 'LOADING' }
-
-              <DatGui data={this.state.data} onUpdate={this.handleUpdate} >
-                <DatSelect path='filterType' label="Node Filter" options={['Absolute density', 'Relative density']} /> 
-                <DatNumber path='NodeDensity' label='Node Density' min={300} max={10000} step={1} />
-                <DatSelect path='edgeDensityDegrees' label="Edge Degrees" options={['1', '2', '3']} /> 
-                <DatNumber path='degreeRange' label='Degree Range' min={1} max={100} step={1} />
-                <DatNumber path='EdgeDensity' label='Edge Density' min={1} max={150} step={1} />
-                <DatButton label={this.state.loading} onClick={()=> this.state.loading === 'RENDER' ? this.updateGraph(false) : ''  } />
-              </DatGui>
-       
-
         </div>
       </div>
     )

@@ -65,8 +65,6 @@ router.get('/hegel/data/sentences', async (req, res, next)=>{
   payload = payload.map(sentence => sentence.dataValues)
                     .sort((a, b) => b.weight - a.weight)
 
-
-
   res.json(JSON.stringify(payload))
 
   res.end()
