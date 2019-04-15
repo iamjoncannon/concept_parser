@@ -9,7 +9,6 @@ import Spiel from './spiel_mobile'
 import SentenceHeader from './sentence_header'
 import init from './init.json'
 import Media from 'react-media'
-import TouchManager from './TouchManager'
 
 let count = 0;  
 
@@ -41,14 +40,9 @@ export default class Graph extends React.Component {
   resize = () => {
 
     window.location.reload()
-
   }
 
   componentDidMount = async () => {
-
-    TouchManager.init();
-    TouchManager.clickHandler = this.onClick
-    TouchManager.forceGraphInstance = this.fg
 
     window.addEventListener("resize", ()=> {this.resize()});
 
@@ -65,12 +59,6 @@ export default class Graph extends React.Component {
   }
 
   handleUpdate = data => this.setState({ data })
-
-  onClick = (node) => {
-
-    _handleClick(node, 40)
-
-  }
 
   _handleClick = (node, distance) => {
 

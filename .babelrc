@@ -1,4 +1,3 @@
 {
-  "presets": ["react", "env", "stage-2"],
-  "plugins": ["@babel/plugin-proposal-private-methods"]
+  "presets": ["react", "env", "stage-2"]
 }
