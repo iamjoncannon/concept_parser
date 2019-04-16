@@ -100,6 +100,8 @@ export default class Graph extends React.Component {
 
   isMenuOpen = (state) => {
 
+    console.log('state ', state)
+
     if(count === 1){
       
       const node = {
@@ -158,6 +160,14 @@ export default class Graph extends React.Component {
 
   }
 
+  closeSpiel = (state) => {
+  
+    this.setState({
+      scene : 'closed'
+    })
+    this.isMenuOpen(state)
+  }
+
   render () {
     
     return (
@@ -165,11 +175,11 @@ export default class Graph extends React.Component {
 
           <Menu pageWrapId={"page-wrap"} 
                 outerContainerId={"App"}
-                width={ '100%' }
+                width={ '70%' }
                 isOpen={ this.state.openSide }
                 onStateChange={ this.isMenuOpen }
           >
-            { this.state.scene === 'opening'  ? <Spiel />  : ''}
+            { this.state.scene === 'opening'  ? <Spiel  onClick={() => this.closeSpiel({isOpen:false}) }/>  : ''}
             
           </Menu>
         

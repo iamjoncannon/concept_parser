@@ -10,7 +10,7 @@
     "deploy": "git add . && git commit -m 'deploying update' && addy=$addy key=$key pm2 deploy ecosystem.config.js production",
     "start-dev": "npm run build & npm run start-server",
     "start-server": "nodemon -L main.js",
-    "build": "webpack -w",
+    "build": "webpack -w --progress",
     "start": "echo 'Running production server' && node server.js",
     "site": "open http://$addy",
     "compile": "NODE_ENV=production webpack -p --progress"
@@ -23,6 +23,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "acorn-dynamic-import": "^4.0.0",
     "aframe": "^0.9.0",
     "axios": "^0.18.0",
     "body-parser": "^1.18.2",
@@ -30,13 +31,15 @@
     "express": "^4.14.0",
     "natural": "^0.6.3",
     "pg": "^7.4.3",
-    "react": "^16.3.2",
+    "react": "^16.8.6",
     "react-burger-menu": "^2.6.5",
     "react-dat-gui": "^2.2.0",
     "react-dom": "^16.3.2",
     "react-force-graph": "^1.20.3",
+    "react-inlinesvg": "^0.8.4",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
+    "react-svg-loader": "^2.1.0",
     "redux": "^4.0.0",
     "redux-devtools-extension": "^2.13.7",
     "redux-logger": "^3.0.6",
@@ -62,7 +65,7 @@
     "style-loader": "^0.21.0",
     "uglifyjs-webpack-plugin": "^2.1.2",
     "volleyball": "^1.5.1",
-    "webpack": "^4.29.6",
+    "webpack": "^4.28.4",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.2.3"
   }

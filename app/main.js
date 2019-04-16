@@ -1,34 +1,18 @@
-import React, { useState } from 'react'
+import React, { Suspense } from 'react'
 import { render } from 'react-dom'
 import { ForceGraph3D } from 'react-force-graph';
-import Graph from './components/graph'
-import MobileGraph from './components/graph_mobile.js'
-import Media from 'react-media'
-
+import DeskWrap from './components/DeskWrap'
+import MobileWrap from './components/MobileWrap'
 
 class Query extends React.Component {
 
 	render(){
+
 		return (
 			<div>
-				<Media
-	            query="(min-width: 700px)"
-	            render={() => {
-	              	return(
 
-						<Graph />
-					) 
-	            	}}
-	          	/>
-	          	<Media
-	            query="(max-width: 699px)"
-	            render={() => {
-	              	return(
-
-						<MobileGraph />
-					) 
-	            	}}
-	          	/>
+				{ window.outerWidth > 700 ? <DeskWrap /> : <MobileWrap /> }
+				
           	</div>
 		)
 	}
@@ -37,9 +21,10 @@ class Query extends React.Component {
 
 render(
 
- 	 <Query />,
+ 	 <Query />
+ 	 ,
 
-  document.getElementById('main')
+  document.getElementById('root')
 );
 
 
