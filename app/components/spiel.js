@@ -6,6 +6,7 @@ export default function spiel(){
 
             <div>
             <i>
+            
             <span> This project renders concepts within a text as a graph. The present example is GWF Hegel's Science of Logic </span> <br /><br />
             <span> See <a href='https://www.youtube.com/watch?v=sPflAhvZgrU'> presentation </a> </span> <br /><br />
             <span> Node's refer to concepts, edges refer to connections between concepts in use.  </span> <br /><br />
