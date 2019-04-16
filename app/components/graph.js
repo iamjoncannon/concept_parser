@@ -18,6 +18,7 @@ export default class Graph extends React.Component {
     super()
 
     this.state = {
+      nodes : init,
       resize: false,
       maxNodeWeight : 22078,
       loading: 'RENDER',
@@ -47,7 +48,6 @@ export default class Graph extends React.Component {
     window.addEventListener("resize", ()=> {this.resize()});
 
     this.setState({
-        nodes : init,
         openSide: true,
         loading: 'RENDER'
       })

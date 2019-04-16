@@ -15,7 +15,7 @@
     "site": "open http://$addy",
     "compile": "NODE_ENV=production webpack -p --progress"
   },
-  "homepage": "joncannon.codes",
+  "homepage": "concept.joncannon.codes",
   "repository": {
     "url": "https://github.com/iamjoncannon/concept_parser.git"
   },

@@ -5,6 +5,7 @@ import Graph from './components/graph'
 import MobileGraph from './components/graph_mobile.js'
 import Media from 'react-media'
 
+
 class Query extends React.Component {
 
 	render(){
@@ -32,6 +33,7 @@ class Query extends React.Component {
 		)
 	}
 }
+
 
 render(
 
